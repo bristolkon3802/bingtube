@@ -1,0 +1,9 @@
+extends base
+
+block content
+    h4 비디오 수정
+    form(method="POST")
+        input(name="title" placeholder="Video Title", value=video.title, required)
+        input(name="description" placeholder="Description", required, type="text", minlength=20, value=video.description)
+        input(name="hashtags" placeholder="해쉬태그, separated by comma.", required, type="text", value=video.hashtags.join())
+        input(value="수정",type="submit")

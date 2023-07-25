@@ -1,0 +1,29 @@
+doctype html 
+html(lang="kr")
+    head
+        title #{pageTitle} | #{siteName}
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+    body
+        header
+            h1=pageTitle
+            nav    
+                ul 
+                    li 
+                        a(href="/") 홈
+                    if loggedIn
+                        li 
+                            a(href="/videos/upload") 비디오업로드
+                        li 
+                            a(href="/users/edit") Edit Profile
+                        li 
+                            a(href="/users/logout") 로그아웃
+                    else
+                        li 
+                            a(href="/join") 계정등록
+                        li 
+                            a(href="/login") 로그인
+                    li 
+                        a(href="/search") 비디오검색
+        main 
+            block content
+    include partials/footer.pug
