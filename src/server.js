@@ -56,6 +56,7 @@ app.use(
 
 /* router 사용 */
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads")); //보여줄 폴더 브라우저에 알려주기
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);

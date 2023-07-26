@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleware = (req, res, next) => {
   //console.log(req.session);
   console.log("session :::::::::::::::");
@@ -27,3 +29,14 @@ export const publicOnlyMiddleware = (req, res, next) => {
     return res.redirect("/");
   }
 };
+
+//파일 업로드 설정
+export const avatarUpload = multer({
+  dest: "uploads/avatars/",
+  limits: { fileSize: 3000000 },
+});
+//비디오 업로드 설정
+export const videoUpload = multer({
+  dest: "uploads/videos/",
+  limits: { fileSize: 10000000 },
+});

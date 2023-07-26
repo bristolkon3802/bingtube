@@ -10,12 +10,18 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   name: { type: String, required: true },
   location: String,
+  videos: [
+    { type: mongoose.Schema.Types.ObjectId, request: true, ref: "Video" },
+  ],
 });
 
 userSchema.pre("save", async function () {
-  //console.log("user password", this.password);
-  this.password = await bcrypt.hash(this.password, 5);
-  //console.log("hashed password", this.password);
+  //video 업로드할때마다 password 변경을 방지한다.
+  if (this.isModified("password")) {
+    //console.log("user password", this.password);
+    this.password = await bcrypt.hash(this.password, 5);
+    //console.log("hashed password", this.password);
+  }
 });
 
 const User = mongoose.model("User", userSchema);

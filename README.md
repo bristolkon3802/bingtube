@@ -185,3 +185,24 @@ server.js : express 프로젝트 전반적인 사용 등록
     https://www.npmjs.com/package/node-fetch
     npm i node-fetch
     npm install node-fetch@2.6.1
+
+25. multer - 파일 업로드
+    https://www.npmjs.com/package/multer
+    npm i multer
+
+    - DB에는 절대 파일을 저장하지 않고, DB에는 파일 위치만 저장
+
+    multer 사용조건
+    1.form 사용조건 삽입
+    2.multer기본설정
+    3.upload middleware만들기
+    -middleware의 순서는 중요함
+    -multer 후 post controller이 실행되어야 함
+    4.route에서 사용
+
+    5.server에 브라우저에게 폴더 위치 알려주기
+
+26. user, video [ relationship ] 구축
+    user.videos.push(newVideo.\_id);
+    const video = await Video.findById(id).populate("owner");
+    const user = await User.findById(id).populate("videos");

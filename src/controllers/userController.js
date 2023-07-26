@@ -188,19 +188,21 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, email: sessionEmail, username: sessionUsername },
+      user: { _id, avatarUrl, email: sessionEmail, username: sessionUsername },
     },
     body: { name, email, username, location },
+    file,
   } = req;
-
+  //console.log(file);
   const pageTitle = "edit-profile";
+  //email 중복 확인
   if (sessionEmail !== email && (await User.exists({ email }))) {
     return res.status(400).render("edit-profile", {
       pageTitle,
-      errorMessage: "이 이메일은 사용중입니다.",
+      errorMessage: "email은 사용중입니다.",
     });
   }
-
+  //username 중복 확인
   if (sessionUsername !== username && (await User.exists({ username }))) {
     return res.status(400).render("edit-profile", {
       pageTitle,
@@ -208,9 +210,11 @@ export const postEdit = async (req, res) => {
     });
   }
 
+  //프로파일 업로드
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username,
@@ -222,4 +226,57 @@ export const postEdit = async (req, res) => {
   return res.redirect("/users/edit");
 };
 
-export const see = (req, res) => res.send("See User");
+//사용자 비밀번호 변경
+export const getChangePassword = (req, res) => {
+  //로그인된 사용자의 정보를 확인 :  소셜로그인 사용자는 제외한다.
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "비밀번호 변경" });
+};
+
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { oldPassword, newPassword, newPasswordChk },
+  } = req;
+  //현재 유저의 정보를 가져온다.
+  const user = await User.findById(_id);
+  //현재 비밀번호 확인
+  const ok = bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "비밀번호 변경",
+      errorMessage: "현재 비밀번호가 일치하지 않습니다.",
+    });
+  }
+  //새비밀번호 확인
+  if (newPassword !== newPasswordChk) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "비밀번호 변경",
+      errorMessage: "새로운 비밀번호가 일치하지 않습니다.",
+    });
+  }
+  //비밀번호 변경
+  //console.log("현재비밀번호 =", user.password);
+  user.password = newPassword;
+  //console.log("새로운비밀번호 =", user.password);
+  await user.save();
+  //console.log("바뀐비밀번호 =", user.password);
+  return res.redirect("/users/logout");
+};
+
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate("videos");
+  //console.log(user);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+  });
+};
