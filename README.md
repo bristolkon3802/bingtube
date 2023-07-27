@@ -233,3 +233,6 @@ server.js : express 프로젝트 전반적인 사용 등록
        5-2. 실행
        npm run dev:server
        npm run dev:assets
+
+28. scss 적용
+    scss폴더 구조 구성
