@@ -206,3 +206,30 @@ server.js : express 프로젝트 전반적인 사용 등록
     user.videos.push(newVideo.\_id);
     const video = await Video.findById(id).populate("owner");
     const user = await User.findById(id).populate("videos");
+
+27. Webpack - webpack.config.js
+    현재 사용하고있는 .js .png .sass .jpg 등등....의 파일들을 받아서
+    다른 파일 .js .css .jpg .png 로 처리,변경 시켜줌
+
+    1. npm i webpack webpack-cli
+    2. npm i webpack webpack-cli -D
+       1. javascript 연결
+          1-1. /webpack.config.js 파일 생성
+          1-2. src/client/js/main.js 폴더 or 파일 생성 (처리하기전)
+          1-3. "assets": "webpack --config webpack.config.js" (webpack 처리 후)
+          1-4. npm run assets
+          1-5. npm install -D babel-loader
+       2. css 연결
+          2-1. src/client/scss/styles.scss 폴더 or 파일 생성
+          2-2. npm install sass-loader sass webpack --save-dev
+          2-3. npm install --save-dev css-loader
+          2-4. npm install --save-dev style-loader
+    3. npm run assets
+
+    4. css만 별도로 분리
+       4-1. npm install --save-dev mini-css-extract-plugin
+    5. nodemon.json 생성
+       5-1. 매번 저장할때마서 서버가 재시작하기 때문에 별도로 분리한다. webpack은 다른 console에서 실행시켜야 한다.
+       5-2. 실행
+       npm run dev:server
+       npm run dev:assets
