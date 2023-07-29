@@ -1,2 +1,3 @@
 import "../scss/styles.scss";
-console.log("Hi! BingStar.");
+
+console.log("main");
