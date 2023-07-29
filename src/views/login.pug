@@ -7,9 +7,7 @@ block content
         input(placeholder="Username" name="username", type="text", required)
         input(placeholder="Password" name="password", type="password", required)
         input(type="submit" value="로그인")
-        br
-        a(href="/users/github/start") Github Login &rarr;
-    hr
-    div    
+        include partials/social-login
+    div.auth-switch
         span 계정이 없으신가요? 계정을 만드세요. 
         a(href="/join") 계정 등록 &rarr;

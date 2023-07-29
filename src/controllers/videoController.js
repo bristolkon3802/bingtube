@@ -3,7 +3,9 @@ import Video from "../models/Video";
 
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({}).sort({ createdAt: "desc" });
+    const videos = await Video.find({})
+      .sort({ createdAt: "desc" })
+      .populate("owner");
     //console.log(videos);
     return res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
@@ -127,7 +129,7 @@ export const search = async (req, res) => {
     /* RegExp === like 와 비슷, i === 소문자, 대문자 가리지 않음, ^${keyword}처음시작 단어, ${keyword}$끝나는 단어 */
     videos = await Video.find({
       title: { $regex: new RegExp(keyword, "i") },
-    });
+    }).populate("owner");
   }
   return res.render("search", { pageTitle: "Search", videos });
 };

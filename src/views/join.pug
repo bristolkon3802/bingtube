@@ -11,7 +11,7 @@ block content
         input(placeholder="Confirm Password" name="password2", type="password", required)
         input(placeholder="Location" name="location", type="text", required)
         input(type="submit" value="등록")
-    hr
-    div    
+        include partials/social-login
+    div.auth-switch
         span 이미 계정이 있습니까? 
         a(href="/login") 로그인 이동 &rarr;

@@ -2,9 +2,12 @@ extends base
 include mixins/video
 
 block content
-    form(method="GET")
+    form(method="GET").search__form
         input(placeholder="타이틀 검색", name="keyword", type="text")
-        input(type="submit", value="검색")
-    div
+        button 
+            i.fas.fa-search
+    div.video-grid
         each video in videos    
             +video(video)
+        else 
+            span.empty__message 비디오가 없습니다.

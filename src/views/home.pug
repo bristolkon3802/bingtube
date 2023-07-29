@@ -2,8 +2,8 @@ extends base
 include mixins/video
 
 block content
-    ul
+    div.video-grid
         each item in videos
             +video(item)
         else
-            li 비디오가 없습니다.
+            span.empty__message 비디오가 없습니다.
