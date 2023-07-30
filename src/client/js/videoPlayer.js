@@ -1,17 +1,22 @@
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
+const playBtnIcon = playBtn.querySelector("i");
 const muteBtn = document.getElementById("mute");
+const muteBtnIcon = muteBtn.querySelector("i");
 const volumeRange = document.getElementById("volume");
 const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
+const fullScreenBtnIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
+/* const playStartEndClick = document.getElementById("playStartEnd");
+const playStartEndClickIcon = playStartEndClick.querySelector("i"); */
 
 let volumeValue = 0.5;
 video.volume = volumeValue;
 
-const handlePlayClick = (e) => {
+const handlePlayBtn = () => {
   //비디오가 플레이 되고 있다면, 멈추는 기능
   //멈춰있으면 플레이 가능하게
   if (video.paused) {
@@ -19,19 +24,28 @@ const handlePlayClick = (e) => {
   } else {
     video.pause();
   }
-  playBtn.innerText = video.paused ? "재생" : "멈춤";
+  playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 };
-//const handlePause = () => (playBtn.innerText = "재생");
-//const handlePlay = () => (playBtn.innerText = "멈춤");
 
-const handleMute = (e) => {
+const handlePlayClick = () => {
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+  playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+};
+
+const handleMute = () => {
   //비디오 음소거 체크
   if (video.muted) {
     video.muted = false;
   } else {
     video.muted = true;
   }
-  muteBtn.innerText = video.muted ? "음소거" : "소리";
+  muteBtnIcon.classList = video.muted
+    ? "fas fa-volume-mute"
+    : "fas fa-volume-up";
   volumeRange.value = video.muted ? 0 : volumeValue;
 };
 
@@ -43,14 +57,14 @@ const handleVolumeRange = (e) => {
   } = e;
   if (video.muted) {
     video.muted = false;
-    muteBtn.innerText = "소리";
+    muteBtnIcon.classList = "fas fa-volume-mute";
   }
   volumeValue = value;
   video.volume = value;
 };
 
 const formatTime = (seconds) =>
-  new Date(seconds * 1000).toISOString().substring(11, 19);
+  new Date(seconds * 1000).toISOString().substring(14, 19);
 
 const handleLoadedMetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
@@ -73,15 +87,18 @@ const handleFullScreen = () => {
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
     document.exitFullscreen();
-    fullScreenBtn.innerHTML = "Enter Full Screen";
+    fullScreenBtnIcon.classList = "fas fa-expand";
   } else {
     videoContainer.requestFullscreen();
-    fullScreenBtn.innerHTML = "Exit Full Screen";
+    fullScreenBtnIcon.classList = "fas fa-compress";
   }
 };
 
 const handleKeydown = (e) => {
-  //e.preventDefault();
+  if (e.keyCode === 32) {
+    video.paused ? video.play() : video.pause();
+    playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+  }
   if (e.keyCode === 39) {
     video.currentTime += 5;
   }
@@ -91,15 +108,15 @@ const handleKeydown = (e) => {
 };
 
 const handleEnded = () => {
-  video.currentTime = 0;
-  playBtn.innerText = "재생";
+  playBtnIcon.classList = "fa-solid fa-rotate-right";
 };
 
-playBtn.addEventListener("click", handlePlayClick);
+playBtn.addEventListener("click", handlePlayBtn);
+video.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 fullScreenBtn.addEventListener("click", handleFullScreen);
 volumeRange.addEventListener("input", handleVolumeRange);
-video.addEventListener("loadedmetadata", handleLoadedMetadata);
+video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimelineChange);
@@ -108,11 +125,17 @@ window.addEventListener("keydown", handleKeydown);
 //마우스가 언제 비디오에 들어가고,
 //언제 비디오 안에서 움직이는지 탐색
 const videoControls = document.getElementById("videoControls");
+const videoControls__playClick = document.getElementById(
+  "videoControls__playClick"
+);
 
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 
-const hideControls = () => videoControls.classList.remove("showing");
+const hideControls = () => {
+  videoControls.classList.remove("showing");
+  /* videoControls__playClick.classList.remove("showing"); */
+};
 
 const handleMouseMove = () => {
   if (controlsTimeout) {
@@ -125,6 +148,8 @@ const handleMouseMove = () => {
     controlsMovementTimeout = null;
   }
   videoControls.classList.add("showing");
+  /* videoControls__playClick.classList.add("showing"); */
+
   //마우스가 멈추는걸 감지
   controlsMovementTimeout = setTimeout(hideControls, 3000);
 };
@@ -133,5 +158,5 @@ const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
 };
 
-video.addEventListener("mousemove", handleMouseMove);
-video.addEventListener("mouseleave", handleMouseLeave);
+videoContainer.addEventListener("mousemove", handleMouseMove);
+videoContainer.addEventListener("mouseleave", handleMouseLeave);

@@ -236,3 +236,5 @@ server.js : express 프로젝트 전반적인 사용 등록
 
 28. scss 적용
     scss폴더 구조 구성
+
+29. javascript 로 비디오 플레이어 만들기
