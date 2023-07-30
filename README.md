@@ -238,3 +238,7 @@ server.js : express 프로젝트 전반적인 사용 등록
     scss폴더 구조 구성
 
 29. javascript 로 비디오 플레이어 만들기
+
+30. API Views - 템플릿을 렌더링하지 않음
+    data attribute
+    (data-id=\_id)

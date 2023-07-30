@@ -108,13 +108,15 @@ const handleKeydown = (e) => {
 };
 
 const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, { method: "POST" });
   playBtnIcon.classList = "fa-solid fa-rotate-right";
 };
 
 playBtn.addEventListener("click", handlePlayBtn);
-video.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 fullScreenBtn.addEventListener("click", handleFullScreen);
+video.addEventListener("click", handlePlayClick);
 volumeRange.addEventListener("input", handleVolumeRange);
 video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
