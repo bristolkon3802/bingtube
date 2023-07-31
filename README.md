@@ -242,3 +242,6 @@ server.js : express 프로젝트 전반적인 사용 등록
 30. API Views - 템플릿을 렌더링하지 않음
     data attribute
     (data-id=\_id)
+
+31. 비디오 녹음기
+    npm i regenerator-runtime
