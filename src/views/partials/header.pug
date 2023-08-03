@@ -18,7 +18,7 @@ header
                         if loggedInUser.avatarUrl === undefind 
                             span 😊
                         else 
-                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
+                            img.header__avatar(src=loggedInUser.socialOnly ?  loggedInUser.avatarUrl : "/" + loggedInUser.avatarUrl)
             else
                 li 
                     a(href="/login") 로그인

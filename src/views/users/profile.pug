@@ -6,7 +6,7 @@ block content
         if loggedInUser.avatarUrl === undefind 
             span 😊
         else 
-            img(src="/"+user.avatarUrl).avatar
+            img(src=user.socialOnly ?  user.avatarUrl : "/" + user.avatarUrl).avatar
         h3=user.name
     div.video-grid
         each video in user.videos  

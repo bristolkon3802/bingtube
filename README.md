@@ -245,3 +245,6 @@ server.js : express 프로젝트 전반적인 사용 등록
 
 31. 비디오 녹음기
     npm i regenerator-runtime
+
+https://github.com/Dockerel/Dostagram/blob/master/src/controllers/userController.js
+https://blogofpjj.tistory.com/47
