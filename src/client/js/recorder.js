@@ -1,27 +1,34 @@
+let stream;
+let recorder;
+let videoFile;
+
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
 
-let stream;
+const handleDownload = () => {
+  const a = document.createElement("a");
+  a.href = videoFile;
+  a.download = "MyRecording.webm";
+  document.body.appendChild(a);
+  a.click();
+};
 
-const handleDownload = () => {};
-
-const hendleStop = () => {
-  startBtn.innerText = "Download Recording";
-  startBtn.removeEventListener("click", hendleStop);
+const handleStop = () => {
+  startBtn.innerText = "녹화 다운로드";
+  startBtn.removeEventListener("click", handleStop);
   startBtn.addEventListener("click", handleDownload);
 
   recorder.stop();
 };
 
 const handleStart = () => {
-  startBtn.innerText = "Stop Recording";
+  startBtn.innerText = "녹화 중지";
   startBtn.removeEventListener("click", handleStart);
-  startBtn.addEventListener("click", hendleStop);
-
-  const recorder = new window.MediaRecorder(stream);
+  startBtn.addEventListener("click", handleStop);
+  //console.log(stream);
+  recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
   recorder.ondataavailable = (e) => {
-    //console.log(e.data);
-    const videoFile = URL.createObjectURL(e.data);
+    videoFile = URL.createObjectURL(e.data);
     //console.log(videoFile);
     video.srcObject = null;
     video.src = videoFile;
@@ -33,14 +40,13 @@ const handleStart = () => {
 
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
+    audio: false,
     video: true,
   });
-  //console.log(stream);
   video.srcObject = stream;
   video.play();
 };
 
-init();
+//init();
 
 startBtn.addEventListener("click", handleStart);

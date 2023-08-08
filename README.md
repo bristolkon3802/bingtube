@@ -246,5 +246,6 @@ server.js : express 프로젝트 전반적인 사용 등록
 31. 비디오 녹음기
     npm i regenerator-runtime
 
-https://github.com/Dockerel/Dostagram/blob/master/src/controllers/userController.js
-https://blogofpjj.tistory.com/47
+    https://github.com/Dockerel/Dostagram/blob/master/src/controllers/userController.js
+    https://blogofpjj.tistory.com/47
+    https://velog.io/@kon6443/NodeJS-Kakao-REST-APIs-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EB%A1%9C%EA%B7%B8%EC%95%84%EC%9B%83-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%A0%95%EB%B3%B4-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0-%EC%97%B0%EA%B2%B0%ED%95%B4%EC%A0%9C

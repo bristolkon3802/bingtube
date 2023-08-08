@@ -3,7 +3,7 @@ extends base
 block content  
     div 
         video#preview
-        button#startBtn Start Recording
+        button#startBtn 녹화 시작
     if errorMessage
         span=errorMessage
     form(method="POST", enctype="multipart/form-data").upload__form
