@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/bristolkon3802/bingtube#readme",
   "dependencies": {
+    "@ffmpeg/core": "^0.12.2",
+    "@ffmpeg/ffmpeg": "^0.12.3",
     "bcrypt": "^5.1.0",
     "connect-mongo": "^5.0.0",
     "dotenv": "^16.3.1",
