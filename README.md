@@ -254,3 +254,4 @@ server.js : express 프로젝트 전반적인 사용 등록
     비디오 녹화 > webm 파일 생성 > mp4 파일 변환, 썸네일 추가
 
         npm install @ffmpeg/ffmpeg @ffmpeg/core
+        npm i @ffmpeg/util

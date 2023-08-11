@@ -39,6 +39,12 @@ const logger = morgan("dev");
 app.set("view engine", "pug");
 /* 디렉토리경로 + views 위치 */
 app.set("views", process.cwd() + "/src/views");
+/* recorder 다운로드 설정 */
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
 /* log 사용 */
 app.use(logger);
 /* form 데이터 사용 : 자바스크립트 object 형식 */
