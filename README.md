@@ -262,3 +262,5 @@ server.js : express 프로젝트 전반적인 사용 등록
 34. 댓글 창 만들기
 
         1. commentSchema 작성 > init.js import > Video.js, User.js comment 추가
+        2. frontend 작성 > commentSection.js 생성 > webpack.config.js 등록 > watch.pug script등록 댓글 창 form 작성 > commentSection.js fetch로 form request
+        3. apiRouters post 주소 작성 > videoController.js createComment 등록

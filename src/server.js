@@ -50,6 +50,7 @@ app.use((req, res, next) => {
 app.use(logger);
 /* form 데이터 사용 : 자바스크립트 object 형식 */
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 /* express-session */
 app.use(
   session({
