@@ -36,6 +36,7 @@ export const getEdit = async (req, res) => {
   }
   //Edit Delete Video !== 본인일 경우에만 확인
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "승인되지 않음");
     return res.status(403).redirect("/");
   }
   return res.render("edit", { pageTitle: `수정: ${video.title}`, video });
@@ -57,6 +58,7 @@ export const postEdit = async (req, res) => {
   }
   //Edit Delete Video !== 본인일 경우에만 확인
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "당신은 비디오의 소유자가 아닙니다");
     return res.status(403).redirect("/");
   }
   await Video.findByIdAndUpdate(id, {
@@ -64,7 +66,7 @@ export const postEdit = async (req, res) => {
     description,
     hashtags: Video.formatHashtags(hashtags),
   });
-
+  req.flash("success", "비디오 수정.");
   return res.redirect(`/videos/${id}`);
 };
 

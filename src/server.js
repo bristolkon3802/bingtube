@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -62,6 +63,8 @@ app.use(
 );
 
 /* router 사용 */
+/* 사용자에게 message 전달 */
+app.use(flash());
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads")); //보여줄 폴더 브라우저에 알려주기
 app.use("/static", express.static("assets")); //보여줄 폴더 브라우저에 알려주기

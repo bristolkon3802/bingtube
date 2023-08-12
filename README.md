@@ -255,3 +255,6 @@ server.js : express 프로젝트 전반적인 사용 등록
 
         npm install @ffmpeg/ffmpeg @ffmpeg/core
         npm i @ffmpeg/util
+
+33. Flash Message - express-flash 사용자에게 flash message를 남길 수 있게 해줌
+    npm i express-flash

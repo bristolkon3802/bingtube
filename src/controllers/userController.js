@@ -236,6 +236,7 @@ export const postEdit = async (req, res) => {
 export const getChangePassword = (req, res) => {
   //로그인된 사용자의 정보를 확인 :  소셜로그인 사용자는 제외한다.
   if (req.session.user.socialOnly === true) {
+    req.flash("error", "비밀번호를 변경할 수 없습니다.");
     return res.redirect("/");
   }
   return res.render("users/change-password", { pageTitle: "비밀번호 변경" });
@@ -271,6 +272,7 @@ export const postChangePassword = async (req, res) => {
   //console.log("새로운비밀번호 =", user.password);
   await user.save();
   //console.log("바뀐비밀번호 =", user.password);
+  req.flash("info", "비밀번호 변경");
   return res.redirect("/users/logout");
 };
 
