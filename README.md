@@ -258,3 +258,7 @@ server.js : express 프로젝트 전반적인 사용 등록
 
 33. Flash Message - express-flash 사용자에게 flash message를 남길 수 있게 해줌
     npm i express-flash
+
+34. 댓글 창 만들기
+
+        1. commentSchema 작성 > init.js import > Video.js, User.js comment 추가
