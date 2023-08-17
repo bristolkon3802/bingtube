@@ -38,5 +38,4 @@ videoRouter
     ]),
     postUpload
   );
-
 export default videoRouter;

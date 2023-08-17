@@ -18,3 +18,25 @@
     }
   }
 }
+.video__comments {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  margin: 0 auto;
+  margin-top: 20px;
+  .video__comment {
+    padding: 10px;
+    border-radius: 9999px;
+    background-color: black;
+    color: white;
+    margin-bottom: 10px;
+    position: relative;
+    .video__comment-delete {
+      position: absolute;
+      display: block;
+      right: 10px;
+      bottom: 10px;
+      cursor: pointer;
+    }
+  }
+}

@@ -17,8 +17,8 @@ export const home = async (req, res) => {
 
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id).populate("owner");
-  //console.log(video);
+  const video = await Video.findById(id).populate("owner").populate("comments");
+  console.log(video);
   if (!video) {
     return res.render("404", { pageTitle: "비디오가 없습니다." });
   }
@@ -170,6 +170,29 @@ export const createComment = async (req, res) => {
     owner: user._id,
     video: id,
   });
+  video.comments.push(comment._id);
+  video.save();
+  return res.status(201).json({ newCommentId: comment._id });
+};
 
-  return res.sendStatus(201);
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id },
+    session: {
+      user: { _id },
+    },
+  } = req;
+  const comment = await Comment.findById(id).populate("video");
+  //console.log(comment);
+  if (!comment) {
+    return res.status(404).render("404", { pageTitle: "비디오가 없습니다." });
+  }
+  if (String(comment.video.owner) !== String(_id)) {
+    req.flash("error", "당신은 비디오의 소유자가 아닙니다");
+    return res.status(403).redirect("/");
+  }
+  await Comment.findByIdAndDelete(id);
+  comment.video.comments.splice(comment.video.comments.indexOf(id), 1);
+  comment.video.save();
+  return res.sendStatus(200);
 };
