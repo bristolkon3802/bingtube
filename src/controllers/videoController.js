@@ -18,7 +18,7 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
-  console.log(video);
+  //console.log(video);
   if (!video) {
     return res.render("404", { pageTitle: "비디오가 없습니다." });
   }
@@ -81,7 +81,7 @@ export const postUpload = async (req, res) => {
     user: { _id },
   } = req.session;
   const { video, thumb } = req.files;
-  console.log(video, thumb);
+  //console.log(video, thumb);
   const { title, description, hashtags } = req.body;
 
   try {
@@ -98,7 +98,7 @@ export const postUpload = async (req, res) => {
     user.save();
     return res.redirect("/");
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     return res.status(400).render("upload", {
       pageTitle: "비디오 등록",
       errorMessage: error._message,
