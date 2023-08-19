@@ -279,3 +279,5 @@ server.js : express 프로젝트 전반적인 사용 등록
        npm run build:assets
     3. Heroku - https://www.heroku.com/
        - 서버를 아주 빠르게 배포할 수 있는 사이트
+
+         3-1. koyeb 를 사용해 배포
