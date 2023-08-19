@@ -81,15 +81,17 @@ export const postUpload = async (req, res) => {
     user: { _id },
   } = req.session;
   const { video, thumb } = req.files;
-  //console.log(video, thumb);
   const { title, description, hashtags } = req.body;
 
+  console.log(video, thumb);
   try {
     const newVideo = await Video.create({
       title,
       description,
-      videoFileUrl: video[0].path,
-      videoThumbUrl: thumb[0].path.replace(/[\\]/g, "/"),
+      videoFileUrl: video ? video[0].location : video[0].path,
+      videoThumbUrl: thumb
+        ? thumb[0].location
+        : thumb[0].path.replace(/[\\]/g, "/"),
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
@@ -98,7 +100,7 @@ export const postUpload = async (req, res) => {
     user.save();
     return res.redirect("/");
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     return res.status(400).render("upload", {
       pageTitle: "비디오 등록",
       errorMessage: error._message,

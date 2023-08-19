@@ -192,6 +192,9 @@ export const getEdit = (req, res) => {
 //user의 프로파일 수정
 //sessiond의 정보를 사용해서 유저의 id를 획득, 필요정보를 업데이트 한다.
 export const postEdit = async (req, res) => {
+  console.log(
+    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+  );
   const {
     session: {
       user: { _id, avatarUrl, email: sessionEmail, username: sessionUsername },
@@ -199,7 +202,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  //console.log(file);
   const pageTitle = "edit-profile";
   //email 중복 확인
   if (sessionEmail !== email && (await User.exists({ email }))) {
@@ -208,19 +210,18 @@ export const postEdit = async (req, res) => {
       errorMessage: "email은 사용중입니다.",
     });
   }
-  //username 중복 확인
   if (sessionUsername !== username && (await User.exists({ username }))) {
     return res.status(400).render("edit-profile", {
       pageTitle,
       errorMessage: "username은 사용중입니다.",
     });
   }
-
   //프로파일 업로드
+  console.log(file);
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: file ? file.location : avatarUrl,
       name,
       email,
       username,

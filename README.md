@@ -271,13 +271,19 @@ server.js : express 프로젝트 전반적인 사용 등록
     1. 댓글 삭제 기능 추가
 
 36. Heroku 배포
-    1. 백엔디 서버 빌드
-       npm install --save-dev @babel/core @babel/cli
-       npm run build:server
-       npm start
-    2. webpack 빌드
-       npm run build:assets
-    3. Heroku - https://www.heroku.com/
-       - 서버를 아주 빠르게 배포할 수 있는 사이트
 
-         3-1. koyeb 를 사용해 배포
+    1.  백엔디 서버 빌드
+        npm install --save-dev @babel/core @babel/cli
+        npm run build:server
+        npm start
+    2.  webpack 빌드
+        npm run build:assets
+    3.  Heroku - https://www.heroku.com/
+
+        - 서버를 아주 빠르게 배포할 수 있는 사이트
+
+    4.  koyeb 를 사용해 배포
+    5.  aws 서버 연결
+    6.  Multer S3 설정
+        npm install --save multer-s3
+        npm i aws-sdk
