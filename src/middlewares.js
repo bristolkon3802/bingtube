@@ -10,9 +10,17 @@ const s3 = new aws.S3({
   },
 });
 
-const upload = multerS3({
+const isKoyeb = process.env.NODE_ENV === "production";
+
+const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "bingtube",
+  bucket: "bingtube/images",
+  acl: "public-read",
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "bingtube/videos",
   acl: "public-read",
 });
 
@@ -22,6 +30,7 @@ export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
   res.locals.siteName = "Bingtube";
   res.locals.loggedInUser = req.session.user || {};
+  res.locals.isKoyeb = isKoyeb;
   //console.log("session : ", req.session.user);
   //console.log(res.locals);
   next();
@@ -51,11 +60,11 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: { fileSize: 3000000 },
-  storage: upload,
+  storage: isKoyeb ? s3ImageUploader : undefined,
 });
 //비디오 업로드 설정
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: { fileSize: 10000000 },
-  storage: upload,
+  storage: isKoyeb ? s3VideoUploader : undefined,
 });

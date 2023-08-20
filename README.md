@@ -284,6 +284,15 @@ server.js : express 프로젝트 전반적인 사용 등록
 
     4.  koyeb 를 사용해 배포
     5.  aws 서버 연결
+        https://app.koyeb.com/
+        create app > github 연걸 (git backurl 변경)
+        http://localhost:4000/
+        http://localhost:4000/users/github/finish
+        https://bingtube-bingtube.koyeb.app/users/github/finish
+        환경변수 설정
+
+        배포 참조 : https://devbull.xyz/migrate-heroku-to-koyeb/
+
     6.  Multer S3 설정
         npm install --save multer-s3
         npm i aws-sdk
