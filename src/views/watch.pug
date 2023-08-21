@@ -2,10 +2,7 @@ extends base
 
 block content
     div#videoContainer(data-id=video._id)
-        if isKoyeb 
-            video(src=video.videoFileUrl, crossorigin) 
-        else 
-            video(src="/"+video.videoFileUrl, crossorigin) 
+        video(src="/"+video.videoFileUrl, crossorigin) 
         div#videoControls.videoControls
             div.videoControls__play
                 span#play.videoControls__playBtn
