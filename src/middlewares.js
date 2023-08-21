@@ -1,5 +1,4 @@
 import multer from "multer";
-import aws from "aws-sdk";
 import multerS3 from "multer-s3";
 import fs from "fs";
 import path from "path";
