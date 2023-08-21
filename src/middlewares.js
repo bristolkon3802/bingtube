@@ -14,7 +14,7 @@ const s3 = new aws.S3({
   },
 });
 
-const client = new S3Client(s3);
+const client = new S3Client({ region: "ap-northeast-2" });
 
 const isKoyeb = process.env.NODE_ENV === "production";
 
