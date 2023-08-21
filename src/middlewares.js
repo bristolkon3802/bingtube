@@ -64,7 +64,6 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: { fileSize: 3000000 },
-  //storage: s3ImageUploader,
   storage: isKoyeb ? s3ImageUploader : undefined,
 });
 //비디오 업로드 설정
@@ -91,6 +90,9 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
       });
     });
   } else if (isKoyeb && req.session.user.avatarUrl) {
+    console.log("s3AvatarDeleteMiddleware ~~~~~~~~~~~~~~~~~~~~~~~~~");
+    console.log(req.session.user.avatarUrl);
+    console.log(`images/${req.session.user.avatarUrl.split("/")[4]}`);
     s3.deleteObject(
       {
         Bucket: "bingtube",
@@ -108,6 +110,7 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
 };
 
 export const s3VideosDeleteMiddleware = async (req, res, next) => {
+  console.log("s3VideosDeleteMiddleware ~~~~~~~~~~~~~~~~~~~~~~~~~");
   const { id } = req.params;
   const {
     user: { _id },
