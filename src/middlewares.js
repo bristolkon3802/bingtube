@@ -139,6 +139,7 @@ export const s3VideosDeleteMiddleware = async (req, res, next) => {
   if (isKoyeb) {
     const key_file = `videos/${video.videoFileUrl.split("/")[4]}`;
     const key_thumb = `videos/${video.videoThumbUrl.split("/")[4]}`;
+    console.log(decodeURI(key_file), decodeURI(key_thumb));
     const params_file = {
       Bucket: "bingtube",
       Key: key_file,
@@ -147,7 +148,6 @@ export const s3VideosDeleteMiddleware = async (req, res, next) => {
       Bucket: "bingtube",
       Key: key_thumb,
     };
-    console.log(decodeURI(params_file), decodeURI(params_thumb));
     try {
       const data_file = await s3.send(new DeleteObjectCommand(params_file));
       const data_thumb = await s3.send(new DeleteObjectCommand(params_thumb));
