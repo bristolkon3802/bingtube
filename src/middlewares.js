@@ -1,9 +1,9 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
-import fs from "fs";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import path from "path";
+import fs from "fs";
 import Video from "./models/Video";
-import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 /* Local, koyeb 체크 */
 const isKoyeb = process.env.NODE_ENV === "production";
@@ -108,7 +108,7 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
     console.log(key);
     const params = {
       Bucket: "bingtube",
-      key: key,
+      Key: key,
     };
     try {
       const data = await s3.send(new DeleteObjectCommand(params));
