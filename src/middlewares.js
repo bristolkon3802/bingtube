@@ -93,18 +93,18 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
     console.log("s3AvatarDeleteMiddleware ~~~~~~~~~~~~~~~~~~~~~~~~~");
     console.log(req.session.user.avatarUrl);
     console.log(`images/${req.session.user.avatarUrl.split("/")[4]}`);
-    s3.deleteObject(
-      {
-        Bucket: "bingtube",
+    const params = {
+      Bucket: "bingtube",
+      Delete: {
         key: `images/${req.session.user.avatarUrl.split("/")[4]}`,
       },
-      (error, data) => {
-        if (error) {
-          throw error;
-        }
-        console.log(`s3 deleteObject =`, data);
+    };
+    s3.deleteObject(params, (error, data) => {
+      if (error) {
+        throw error;
       }
-    );
+      console.log(`s3 deleteObject =`, data);
+    });
   }
   next();
 };
