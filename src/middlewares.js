@@ -23,7 +23,7 @@ const s3ImageUploader = multerS3({
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (request, file, ab_callback) {
-    const newFileName = Date.now() + "-" + file.originalname;
+    const newFileName = Date.now() + "-" + file.originalname.replace(" ", "");
     const fullPath = "images/" + newFileName;
     ab_callback(null, fullPath);
   },
@@ -35,7 +35,10 @@ const s3VideoUploader = multerS3({
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (request, file, ab_callback) {
-    const newFileName = Date.now() + "-" + file.originalname;
+    const newFileName =
+      Date.now() +
+      "-" +
+      file.originalname.replace(" ", "").replace(/\..*$/, "");
     const fullPath = "videos/" + newFileName;
     ab_callback(null, fullPath);
   },
@@ -102,16 +105,17 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
     });
   } else if (isKoyeb && req.session.user.avatarUrl) {
     const key = `images/${req.session.user.avatarUrl.split("/")[4]}`;
+    console.log(key);
     const params = {
       Bucket: "bingtube",
       key: key,
     };
     try {
-      const response = await s3.send(new DeleteObjectCommand(params));
-      console.log("Success. Object deleted.", response);
+      const data = await s3.send(new DeleteObjectCommand(params));
+      console.log("Success. Object deleted.", data);
     } catch (error) {
-      console.error("response = ", error);
-      return res.redirect("/users/deit");
+      console.error("error data = ", error);
+      return res.redirect("/users/edit");
     }
   }
   next();
