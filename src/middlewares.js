@@ -25,7 +25,7 @@ const s3ImageUploader = multerS3({
   key: function (request, file, ab_callback) {
     const newFileName = Date.now() + "-" + file.originalname.replace(" ", "");
     const fullPath = "images/" + newFileName;
-    ab_callback(null, fullPath);
+    ab_callback(null, encodeURI(fullPath));
   },
 });
 
@@ -40,7 +40,7 @@ const s3VideoUploader = multerS3({
       "-" +
       file.originalname.replace(" ", "").replace(/\..*$/, "");
     const fullPath = "videos/" + newFileName;
-    ab_callback(null, fullPath);
+    ab_callback(null, encodeURI(fullPath));
   },
 });
 
@@ -108,7 +108,7 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
     console.log(key);
     const params = {
       Bucket: "bingtube",
-      Key: key,
+      Key: decodeURI(key),
     };
     try {
       const data = await s3.send(new DeleteObjectCommand(params));
@@ -139,15 +139,16 @@ export const s3VideosDeleteMiddleware = async (req, res, next) => {
   if (isKoyeb) {
     const key_file = `videos/${video.videoFileUrl.split("/")[4]}`;
     const key_thumb = `videos/${video.videoThumbUrl.split("/")[4]}`;
-    console.log(decodeURI(key_file), decodeURI(key_thumb));
     const params_file = {
       Bucket: "bingtube",
-      Key: key_file,
+      Key: decodeURI(key_file),
     };
     const params_thumb = {
       Bucket: "bingtube",
-      Key: key_thumb,
+      Key: decodeURI(key_thumb),
     };
+    console.log(params_file, params_thumb);
+    //console.log(decodeURI(key_file), decodeURI(key_thumb));
     try {
       const data_file = await s3.send(new DeleteObjectCommand(params_file));
       const data_thumb = await s3.send(new DeleteObjectCommand(params_thumb));
