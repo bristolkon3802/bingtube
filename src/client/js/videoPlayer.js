@@ -10,8 +10,10 @@ const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenBtnIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
-/* const playStartEndClick = document.getElementById("playStartEnd");
-const playStartEndClickIcon = playStartEndClick.querySelector("i"); */
+const deleteVideo = document.getElementById("deleteVideo");
+
+const formatTime = (seconds) =>
+  new Date(seconds * 1000).toISOString().substring(14, 19);
 
 let volumeValue = 0.5;
 video.volume = volumeValue;
@@ -63,24 +65,18 @@ const handleVolumeRange = (e) => {
   video.volume = value;
 };
 
-const formatTime = (seconds) =>
-  new Date(seconds * 1000).toISOString().substring(14, 19);
-
 const handleLoadedMetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
   timeline.max = Math.floor(video.duration);
 };
 
+video.readyState
+  ? handleLoadedMetadata()
+  : video.addEventListener("loadeddata", handleLoadedMetadata);
+
 const handleTimeUpdate = () => {
   currenTime.innerHTML = formatTime(Math.floor(video.currentTime));
   timeline.value = Math.floor(video.currentTime);
-};
-
-const handleTimelineChange = (e) => {
-  const {
-    target: { value },
-  } = e;
-  video.currentTime = value;
 };
 
 const handleFullScreen = () => {
@@ -113,16 +109,12 @@ const handleEnded = () => {
   playBtnIcon.classList = "fa-solid fa-rotate-right";
 };
 
-playBtn.addEventListener("click", handlePlayBtn);
-muteBtn.addEventListener("click", handleMute);
-fullScreenBtn.addEventListener("click", handleFullScreen);
-video.addEventListener("click", handlePlayClick);
-volumeRange.addEventListener("input", handleVolumeRange);
-video.addEventListener("loadeddata", handleLoadedMetadata);
-video.addEventListener("timeupdate", handleTimeUpdate);
-video.addEventListener("ended", handleEnded);
-timeline.addEventListener("input", handleTimelineChange);
-window.addEventListener("keydown", handleKeydown);
+timeline.addEventListener("input", (e) => {
+  const {
+    target: { value },
+  } = e;
+  video.currentTime = value;
+});
 
 //마우스가 언제 비디오에 들어가고,
 //언제 비디오 안에서 움직이는지 탐색
@@ -160,5 +152,22 @@ const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+const handleDeleteVideo = (e) => {
+  const result = confirm("영상을 삭제하시겠습니까?");
+  if (!result) {
+    e.preventDefault();
+  }
+};
+
+playBtn.addEventListener("click", handlePlayBtn);
+muteBtn.addEventListener("click", handleMute);
+fullScreenBtn.addEventListener("click", handleFullScreen);
+video.addEventListener("click", handlePlayClick);
+volumeRange.addEventListener("input", handleVolumeRange);
+video.addEventListener("loadeddata", handleLoadedMetadata);
+video.addEventListener("timeupdate", handleTimeUpdate);
+video.addEventListener("ended", handleEnded);
+window.addEventListener("keydown", handleKeydown);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
+deleteVideo.addEventListener("click", handleDeleteVideo);
