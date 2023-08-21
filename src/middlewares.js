@@ -25,7 +25,7 @@ const s3ImageUploader = multerS3({
   key: function (request, file, ab_callback) {
     const newFileName = Date.now() + "-" + file.originalname.replace(" ", "");
     const fullPath = "images/" + newFileName;
-    ab_callback(null, encodeURI(fullPath));
+    ab_callback(null, fullPath);
   },
 });
 
@@ -40,7 +40,7 @@ const s3VideoUploader = multerS3({
       "-" +
       file.originalname.replace(" ", "").replace(/\..*$/, "");
     const fullPath = "videos/" + newFileName;
-    ab_callback(null, encodeURI(fullPath));
+    ab_callback(null, fullPath);
   },
 });
 
