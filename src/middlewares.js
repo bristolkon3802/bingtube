@@ -6,7 +6,11 @@ import path from "path";
 import Video from "./models/Video";
 import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-const s3 = new aws.S3({
+/* Local, koyeb 체크 */
+const isKoyeb = process.env.NODE_ENV === "production";
+
+/* was Object */
+const s3 = new S3Client({
   region: "ap-northeast-2",
   credentials: {
     accessKeyId: process.env.AWS_ID,
@@ -14,14 +18,11 @@ const s3 = new aws.S3({
   },
 });
 
-const client = new S3Client({ region: "ap-northeast-2" });
-
-const isKoyeb = process.env.NODE_ENV === "production";
-
 const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "bingtube",
   acl: "public-read",
+  contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (request, file, ab_callback) {
     const newFileName = Date.now() + "-" + file.originalname;
     const fullPath = "images/" + newFileName;
@@ -88,14 +89,12 @@ export const videoUpload = multer({
 
 export const s3AvatarDeleteMiddleware = async (req, res, next) => {
   if (!req.file) {
-    console.log("avatarDeleteMiddleware 파일 없음");
     return next();
   }
   if (!isKoyeb && req.session.user.avatarUrl) {
     const filePath = path.join(__dirname, "../", req.session.user.avatarUrl);
     fs.access(filePath, fs.constants.F_OK, (error) => {
       if (error) return console.log(error);
-
       fs.unlink(filePath, (error) => {
         error
           ? console.log(error)
@@ -103,18 +102,14 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
       });
     });
   } else if (isKoyeb && req.session.user.avatarUrl) {
-    console.log("s3AvatarDeleteMiddleware ~~~~~~~~~~~~~~~~~~~~~~~~~");
-    console.log(req.session.user.avatarUrl);
-    console.log(`images/${req.session.user.avatarUrl.split("/")[4]}`);
-
-    const input = {
+    const key = `images/${req.session.user.avatarUrl.split("/")[4]}`;
+    const params = {
       Bucket: "bingtube",
-      key: `images/${req.session.user.avatarUrl.split("/")[4]}`,
+      key: key,
     };
-    const command = new DeleteObjectCommand(input);
     try {
-      const response = await client.send(command);
-      console.log("response = ", response);
+      const response = await s3.send(new DeleteObjectCommand(params));
+      console.log("Success. Object deleted.", response);
     } catch (error) {
       console.error("response = ", error);
       return res.redirect("/users/deit");
