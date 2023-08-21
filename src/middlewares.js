@@ -19,6 +19,11 @@ const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "bingtube/images",
   acl: "public-read",
+  key: function (request, file, ab_callback) {
+    const newFileName = Date.now() + "-" + file.originalname;
+    const fullPath = "images/" + newFileName;
+    ab_callback(null, fullPath);
+  },
 });
 
 const s3VideoUploader = multerS3({
