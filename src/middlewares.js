@@ -6,7 +6,7 @@ import path from "path";
 import Video from "./models/Video";
 import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-const client = S3Client({});
+const client = new S3Client({});
 
 const s3 = new aws.S3({
   region: "ap-northeast-2",
