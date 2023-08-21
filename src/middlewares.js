@@ -147,6 +147,7 @@ export const s3VideosDeleteMiddleware = async (req, res, next) => {
       Bucket: "bingtube",
       Key: key_thumb,
     };
+    console.log(params_file, params_thumb);
     try {
       const data_file = await s3.send(new DeleteObjectCommand(params_file));
       const data_thumb = await s3.send(new DeleteObjectCommand(params_thumb));
