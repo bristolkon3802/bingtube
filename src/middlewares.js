@@ -6,6 +6,8 @@ import path from "path";
 import Video from "./models/Video";
 import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
+const client = new S3Client({});
+
 const s3 = new aws.S3({
   region: "ap-northeast-2",
   credentials: {
@@ -13,8 +15,6 @@ const s3 = new aws.S3({
     secretAccessKey: process.env.AWS_SECRET,
   },
 });
-
-const client = new S3Client(s3);
 
 const isKoyeb = process.env.NODE_ENV === "production";
 
