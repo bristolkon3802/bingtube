@@ -122,7 +122,6 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
 };
 
 export const s3VideosDeleteMiddleware = async (req, res, next) => {
-  console.log("s3VideosDeleteMiddleware ~~~~~~~~~~~~~~~~~~~~~~~~~");
   const { id } = req.params;
   const {
     user: { _id },
@@ -138,30 +137,24 @@ export const s3VideosDeleteMiddleware = async (req, res, next) => {
     return res.redirect("/");
   }
   if (isKoyeb) {
-    s3.deleteObject(
-      {
-        Bucket: "bingtube",
-        key: `videos/${video.fileUrl.split("/")[4]}`,
-      },
-      (error, data) => {
-        if (error) {
-          throw error;
-        }
-        console.log(`s3 deleteObject =`, data);
-      }
-    );
-    s3.deleteObject(
-      {
-        Bucket: "bingtube",
-        key: `videos/${video.thumbUrl.split("/")[4]}`,
-      },
-      (error, data) => {
-        if (error) {
-          throw error;
-        }
-        console.log(`s3 deleteObject =`, data);
-      }
-    );
+    const key_file = `videos/${video.videoFileUrl.split("/")[4]}`;
+    const key_thumb = `videos/${video.videoThumbUrl.split("/")[4]}`;
+    const params_file = {
+      Bucket: "bingtube",
+      Key: key_file,
+    };
+    const params_thumb = {
+      Bucket: "bingtube",
+      Key: key_thumb,
+    };
+    try {
+      const data_file = await s3.send(new DeleteObjectCommand(params_file));
+      const data_thumb = await s3.send(new DeleteObjectCommand(params_thumb));
+      console.log("Success. Object deleted.", data_file, data_thumb);
+    } catch (error) {
+      console.error("error data = ", error);
+      return res.redirect("/");
+    }
   } else {
     const videoPath = path.join(__dirname, "../", video.videoFileUrl);
     fs.access(videoPath, fs.constants.F_OK, (error) => {

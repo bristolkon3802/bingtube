@@ -298,3 +298,4 @@ server.js : express 프로젝트 전반적인 사용 등록
         npm i aws-sdk
 
         https://github.com/doslahtm/wetube/blob/master/src/middlewares.js
+        https://github.com/dition0221/youtube_challenge/blob/master/src/middlewares.js
