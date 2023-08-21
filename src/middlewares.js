@@ -4,7 +4,9 @@ import multerS3 from "multer-s3";
 import fs from "fs";
 import path from "path";
 import Video from "./models/Video";
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
+
+const client = S3Client({});
 
 const s3 = new aws.S3({
   region: "ap-northeast-2",
@@ -110,8 +112,12 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
       key: `images/${req.session.user.avatarUrl.split("/")[4]}`,
     };
     const command = new DeleteObjectCommand(input);
-    const response = await s3.send(command);
-    console.log("response = ", response);
+    try {
+      const response = await client.send(command);
+      console.log("response = ", response);
+    } catch (error) {
+      console.error("response = ", error);
+    }
   }
   next();
 };
