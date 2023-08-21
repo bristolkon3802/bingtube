@@ -296,3 +296,5 @@ server.js : express 프로젝트 전반적인 사용 등록
     6.  Multer S3 설정
         npm install --save multer-s3
         npm i aws-sdk
+
+        https://github.com/doslahtm/wetube/blob/master/src/middlewares.js

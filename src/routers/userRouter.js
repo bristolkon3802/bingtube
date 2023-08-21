@@ -10,6 +10,7 @@ import {
   getChangePassword,
 } from "../controllers/userController";
 import {
+  s3AvatarDeleteMiddleware,
   avatarUpload,
   protectorMiddleware,
   publicOnlyMiddleware,
@@ -22,7 +23,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(avatarUpload.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), s3AvatarDeleteMiddleware, postEdit);
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)

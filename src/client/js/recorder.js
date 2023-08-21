@@ -97,16 +97,21 @@ const handleStart = () => {
 };
 
 const init = async () => {
-  stream = await navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: true,
-    video: {
-      width: 1024,
-      height: 576,
-    },
-  });
-  video.srcObject = stream;
-  video.play();
+  let stream = null;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: true,
+      video: {
+        width: 1024,
+        height: 576,
+      },
+    });
+    video.srcObject = stream;
+    video.play();
+  } catch (error) {
+    console.log(`비디오 연결 확인 : ${error}`);
+  }
 };
 
 init();

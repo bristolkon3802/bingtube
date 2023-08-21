@@ -18,10 +18,10 @@ header
                         if loggedInUser.avatarUrl === undefind 
                             span 😊
                         else 
-                            if loggedInUser.socialOnly.toString().includes("http")
-                                img.header__avatar(src=loggedInUser.avatarUrl)
+                            if isKoyeb
+                                img.header__avatar(src=loggedInUser.avatarUrl).avatar
                             else 
-                                img.header__avatar(src="/"+loggedInUser.avatarUrl)
+                                img.header__avatar(src="/"+loggedInUser.avatarUrl).avatar
 
             else
                 li 

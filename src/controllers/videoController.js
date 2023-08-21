@@ -50,14 +50,16 @@ export const postEdit = async (req, res) => {
   } = req.session;
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
+
   /* findById === id 값을 넘겨받는다. */
   //const video = await Video.findById(id);
   /* exists === id 가 있다면 true 없으면 false 로 받음 */
   /* exists === 필터 필요 exists({ _id: id })*/
-  const video = await Video.exists({ _id: id });
+  const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "비디오가 없습니다." });
   }
+
   //Edit Delete Video !== 본인일 경우에만 확인
   if (String(video.owner) !== String(_id)) {
     req.flash("error", "당신은 비디오의 소유자가 아닙니다");
@@ -88,7 +90,9 @@ export const postUpload = async (req, res) => {
       title,
       description,
       videoFileUrl: isKoyeb ? video[0].location : video[0].path,
-      videoThumbUrl: isKoyeb ? thumb[0].location : thumb[0].path,
+      videoThumbUrl: isKoyeb
+        ? thumb[0].location
+        : thumb[0].path.replace(/[\\]/g, "/"),
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
