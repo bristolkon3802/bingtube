@@ -4,6 +4,7 @@ import multerS3 from "multer-s3";
 import fs from "fs";
 import path from "path";
 import Video from "./models/Video";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 const s3 = new aws.S3({
   region: "ap-northeast-2",
@@ -17,7 +18,7 @@ const isKoyeb = process.env.NODE_ENV === "production";
 
 const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "bingtube/images",
+  bucket: "bingtube",
   acl: "public-read",
   key: function (request, file, ab_callback) {
     const newFileName = Date.now() + "-" + file.originalname;
@@ -28,9 +29,14 @@ const s3ImageUploader = multerS3({
 
 const s3VideoUploader = multerS3({
   s3: s3,
-  bucket: "bingtube/videos",
+  bucket: "bingtube",
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
+  key: function (request, file, ab_callback) {
+    const newFileName = Date.now() + "-" + file.originalname;
+    const fullPath = "videos/" + newFileName;
+    ab_callback(null, fullPath);
+  },
 });
 
 export const localsMiddleware = (req, res, next) => {
@@ -98,18 +104,14 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
     console.log("s3AvatarDeleteMiddleware ~~~~~~~~~~~~~~~~~~~~~~~~~");
     console.log(req.session.user.avatarUrl);
     console.log(`images/${req.session.user.avatarUrl.split("/")[4]}`);
-    const params = {
+
+    const input = {
       Bucket: "bingtube",
-      Delete: {
-        key: `images/${req.session.user.avatarUrl.split("/")[4]}`,
-      },
+      key: `images/${req.session.user.avatarUrl.split("/")[4]}`,
     };
-    s3.deleteObject(params, (error, data) => {
-      if (error) {
-        throw error;
-      }
-      console.log(`s3 deleteObject =`, data);
-    });
+    const command = new DeleteObjectCommand(input);
+    const response = await s3.send(command);
+    console.log("response = ", response);
   }
   next();
 };

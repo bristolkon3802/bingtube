@@ -46,10 +46,11 @@ export const getEdit = async (req, res) => {
 
 export const postEdit = async (req, res) => {
   const {
-    user: { _id },
-  } = req.session;
-  const { id } = req.params;
-  const { title, description, hashtags } = req.body;
+    params: { id },
+    session: { _id },
+    body: { title, description, hashtags },
+    files: { thumb },
+  } = req;
 
   /* findById === id 값을 넘겨받는다. */
   //const video = await Video.findById(id);
@@ -65,6 +66,16 @@ export const postEdit = async (req, res) => {
     req.flash("error", "당신은 비디오의 소유자가 아닙니다");
     return res.status(403).redirect("/");
   }
+
+  if (thumb && thumb[0].size > 10000000) {
+    return res
+      .status(500)
+      .render("upload", {
+        pageTitle,
+        errorMsg: "10MB 이하 썸네일 이미지만 업로드 할 수 있습니다.",
+      });
+  }
+
   await Video.findByIdAndUpdate(id, {
     title,
     description,
