@@ -19,7 +19,7 @@ const s3 = new S3Client({
 
 const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "bingtube",
+  bucket: process.env.AWS_PROJECT_NAME,
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (request, file, ab_callback) {
@@ -31,7 +31,7 @@ const s3ImageUploader = multerS3({
 
 const s3VideoUploader = multerS3({
   s3: s3,
-  bucket: "bingtube",
+  bucket: process.env.AWS_PROJECT_NAME,
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (request, file, ab_callback) {
@@ -107,7 +107,7 @@ export const s3AvatarDeleteMiddleware = async (req, res, next) => {
     const key = `images/${req.session.user.avatarUrl.split("/")[4]}`;
     console.log(key);
     const params = {
-      Bucket: "bingtube",
+      Bucket: process.env.AWS_PROJECT_NAME,
       Key: decodeURI(key),
     };
     try {
@@ -140,11 +140,11 @@ export const s3VideosDeleteMiddleware = async (req, res, next) => {
     const key_file = `videos/${video.videoFileUrl.split("/")[4]}`;
     const key_thumb = `videos/${video.videoThumbUrl.split("/")[4]}`;
     const params_file = {
-      Bucket: "bingtube",
+      Bucket: process.env.AWS_PROJECT_NAME,
       Key: decodeURI(key_file),
     };
     const params_thumb = {
-      Bucket: "bingtube",
+      Bucket: process.env.AWS_PROJECT_NAME,
       Key: decodeURI(key_thumb),
     };
     console.log(params_file, params_thumb);
