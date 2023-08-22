@@ -127,8 +127,9 @@ export const deleteVideo = async (req, res) => {
   }
   await Video.findByIdAndDelete(id);
 
-  video.owner.videos.splice(video.owner.videos.indexOf(id), 1);
-  await video.owner.save();
+  const user = await User.findById(_id);
+  user.videos.splice(user.videos.indexOf(id), 1);
+  user.save();
 
   return res.redirect("/");
 };
