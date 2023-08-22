@@ -47,11 +47,11 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     params: { id },
-    session: { _id },
+    session: {
+      user: { _id },
+    },
     body: { title, description, hashtags },
-    files: { thumb },
   } = req;
-
   /* findById === id 값을 넘겨받는다. */
   //const video = await Video.findById(id);
   /* exists === id 가 있다면 true 없으면 false 로 받음 */
@@ -60,20 +60,10 @@ export const postEdit = async (req, res) => {
   if (!video) {
     return res.status(404).render("404", { pageTitle: "비디오가 없습니다." });
   }
-
   //Edit Delete Video !== 본인일 경우에만 확인
   if (String(video.owner) !== String(_id)) {
     req.flash("error", "당신은 비디오의 소유자가 아닙니다");
     return res.status(403).redirect("/");
-  }
-
-  if (thumb && thumb[0].size > 10000000) {
-    return res
-      .status(500)
-      .render("upload", {
-        pageTitle,
-        errorMsg: "10MB 이하 썸네일 이미지만 업로드 할 수 있습니다.",
-      });
   }
 
   await Video.findByIdAndUpdate(id, {
@@ -96,6 +86,7 @@ export const postUpload = async (req, res) => {
   const { video, thumb } = req.files;
   const { title, description, hashtags } = req.body;
   const isKoyeb = process.env.NODE_ENV === "production";
+
   try {
     const newVideo = await Video.create({
       title,

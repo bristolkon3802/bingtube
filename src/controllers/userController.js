@@ -7,8 +7,6 @@ import fetch from "node-fetch";
   Github 로그인 시 email이 같다면 로그인 가능함.
 */
 
-let kakaoTempData;
-
 /* 계정 등록 */
 export const getJoin = (req, res) =>
   res.render("join", { pageTitle: "계정 등록" });
@@ -177,11 +175,12 @@ export const finishGithubLogin = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  req.session.destroy();
   //req.session.loggedIn = false;
   //req.session.loggedInUser = null;
   //req.locals.loggedIn = req.session.loggedIn;
   //req.locals.loggedInUser = req.session.loggedInUser;
+  req.flash("success", "Successfully Logged out.");
+  req.session.destroy();
   return res.redirect("/");
 };
 
