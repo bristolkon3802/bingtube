@@ -22,7 +22,11 @@ const s3ImageUploader = multerS3({
   bucket: "bingtube",
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
-  key: function (request, file, ab_callback) {
+  key: function (req, file, ab_callback) {
+    file.originalname = Buffer.from(file.originalname, "latin1").toString(
+      "utf8"
+    );
+
     const newFileName = Date.now() + "-" + file.originalname.replace(" ", "");
     const fullPath = "images/" + newFileName;
     ab_callback(null, fullPath);
@@ -34,7 +38,11 @@ const s3VideoUploader = multerS3({
   bucket: "bingtube",
   acl: "public-read",
   contentType: multerS3.AUTO_CONTENT_TYPE,
-  key: function (request, file, ab_callback) {
+  key: function (req, file, ab_callback) {
+    file.originalname = Buffer.from(file.originalname, "latin1").toString(
+      "utf8"
+    );
+
     const newFileName =
       Date.now() +
       "-" +
