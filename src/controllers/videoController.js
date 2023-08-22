@@ -116,7 +116,7 @@ export const deleteVideo = async (req, res) => {
   const {
     user: { _id },
   } = req.session;
-  const video = await Video.findById(id).populate("owner");
+  const video = await Video.findById(id);
   //const user = await User.findById(_id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "비디오가 없습니다." });
@@ -129,7 +129,7 @@ export const deleteVideo = async (req, res) => {
 
   const user = await User.findById(_id);
   user.videos.splice(user.videos.indexOf(id), 1);
-  user.save();
+  await user.save();
 
   return res.redirect("/");
 };
