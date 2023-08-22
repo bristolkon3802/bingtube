@@ -125,10 +125,12 @@ export const deleteVideo = async (req, res) => {
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
-  //console.log(id);
   await Video.findByIdAndDelete(id);
-  //user.videos.splice(user.videos.indexOf(id), 1);
-  //user.save();
+
+  const user = await User.findById(_id);
+  user.videos.splice(user.videos.indexOf(id), 1);
+  await user.save();
+
   return res.redirect("/");
 };
 
@@ -166,7 +168,9 @@ export const createComment = async (req, res) => {
   } = req;
 
   const video = await Video.findById(id);
-  if (!video) {
+  const userDB = await User.findById(user._id);
+  if (!video || !userDB) {
+    req.flash("error", "정보가 없습니다.");
     return res.sendStatus(404);
   }
 
@@ -175,8 +179,13 @@ export const createComment = async (req, res) => {
     owner: user._id,
     video: id,
   });
+
   video.comments.push(comment._id);
   video.save();
+
+  userDB.comments.push(comment._id);
+  userDB.save();
+
   return res.status(201).json({ newCommentId: comment._id });
 };
 
@@ -187,7 +196,9 @@ export const deleteComment = async (req, res) => {
       user: { _id },
     },
   } = req;
-  const comment = await Comment.findById(id).populate("video");
+  const comment = await Comment.findById(id)
+    .populate("video")
+    .populate("owner");
   //console.log(comment);
   if (!comment) {
     return res.status(404).render("404", { pageTitle: "비디오가 없습니다." });
@@ -197,7 +208,10 @@ export const deleteComment = async (req, res) => {
     return res.status(403).redirect("/");
   }
   await Comment.findByIdAndDelete(id);
+
   comment.video.comments.splice(comment.video.comments.indexOf(id), 1);
-  comment.video.save();
+  await comment.video.save();
+  comment.owner.comments.splice(comment.owner.comments.indexOf(id), 1);
+  await comment.owner.save();
   return res.sendStatus(200);
 };
