@@ -64,11 +64,10 @@ const handleDownload = async () => {
   ffmpeg.FS("unlink", files.thumb);
 
   URL.revokeObjectURL(mp4Url);
-  URL.revokeObjectURL(thumbUrl);
   URL.revokeObjectURL(videoFile);
+  URL.revokeObjectURL(thumbUrl);
 
   actionBtn.disabled = false;
-  init();
   actionBtn.innerText = "녹화";
   actionBtn.addEventListener("click", handleStart);
 };
@@ -97,21 +96,16 @@ const handleStart = () => {
 };
 
 const init = async () => {
-  let stream = null;
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: true,
-      video: {
-        width: 1024,
-        height: 576,
-      },
-    });
-    video.srcObject = stream;
-    video.play();
-  } catch (error) {
-    console.log(`비디오 연결 확인 : ${error}`);
-  }
+  stream = await navigator.mediaDevices.getUserMedia({
+    audio: false,
+    video: true,
+    video: {
+      width: 1024,
+      height: 576,
+    },
+  });
+  video.srcObject = stream;
+  video.play();
 };
 
 init();
