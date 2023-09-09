@@ -11,7 +11,7 @@ mixin video(video_info)
                     //a(href=`/users/${video_info.owner._id}`).avatar.no-image
                 else
                     //a(href=`/users/${video_info.owner._id}`)   
-                    img(src=`${video_info.owner.avatarUrl}`,crossOrigin).avatar
+                    img(src=`${video_info.owner.avatarUrl}`).avatar
             div.video-mixin__desc
                 span.video-mixin__title=video_info.title.length > 60? video_info.title.slice(0,60) + '...' :video_info.title
                 div.video-mixin__meta 

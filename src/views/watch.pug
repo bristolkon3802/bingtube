@@ -31,7 +31,7 @@ block content
                     a(href=`/users/${video.owner._id}`).avatar.no-image
                 else
                     a(href=`/users/${video.owner._id}`)   
-                    img(src=`/${video.owner.avatarUrl}`,crossOrigin).avatar
+                    img(src=`${video.owner.avatarUrl}`,crossOrigin).avatar
             div.video-creator__info
                 small.video__owner
                     a(href=`/users/${video.owner._id}`)=video.owner.name
@@ -69,7 +69,7 @@ block content
                     a(href=`/users/${video.owner._id}`).avatar.no-image
                 else
                     a(href=`/users/${video.owner._id}`)   
-                    img(src=`/${video.owner.avatarUrl}`,crossOrigin).avatar
+                    img(src=`${video.owner.avatarUrl}`,crossOrigin).avatar
             form.video__add-comments__form#commentForm
                 textarea(placeholder="Write a nice comment")
                 div.video__add-comments__btn
