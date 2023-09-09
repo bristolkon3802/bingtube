@@ -25,19 +25,57 @@ block content
 
     div.video__data
         p.video__title=video.title
-        small.video__owner Uploaded by 
-            a(href=`/users/${video.owner._id}`)=video.owner.name
-        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr",{weekday:'long', year:'numeric', month:'long', day:'numeric'})    
-        if String(video.owner._id) === String(loggedInUser._id)
-            a(href=`${video.id}/edit`) Edit Video &rarr;
-            br
-            a(href=`${video.id}/delete`)#deleteVideo Delete Video &rarr;
+        div.video-creator
+            div
+                if !video.owner.avatarUrl
+                    a(href=`/users/${video.owner._id}`).avatar.no-image
+                else
+                    a(href=`/users/${video.owner._id}`)   
+                    img(src=`/${video.owner.avatarUrl}`,crossOrigin).avatar
+            div.video-creator__info
+                small.video__owner
+                    a(href=`/users/${video.owner._id}`)=video.owner.name
+                small.video__subscribe
+                    |  구독자 0명
+            //-    
+                small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr",{weekday:'long', year:'numeric', month:'long', day:'numeric'})
+            div    
+                if loggedIn    
+                    if String(loggedInUser._id) !== String(video.owner._id)
+                        button.video-btn__subscribe 구독
+                else   
+                    button(data-button="subscribe").video-btn__subscribe 구독
+                //-
+                    div.login-modal
+                        h3 Want to subscribe to this channel?
+                        p Sign in to subscribe to this channel.
+                        a(href="/join") Sign in
+
+        div.video-creator__btn
+            if String(video.owner._id) === String(loggedInUser._id)
+                a(href=`${video.id}/edit`).video-btn__subscribe 비디오 수정 &rarr;
+            a(href=`${video.id}/delete`)#deleteVideo.video-btn__subscribe 비디오 삭제 &rarr;
+        
+        div.video-meta 
+            strong.video-meta__views #{video.meta.views}회
+            small.video-meta__createdAt=moment(video.createdAt).fromNow()
+            small.video-meta__hashtags=video.hashtags
+            p=video.description
 
     if loggedIn
         div.video__add-comments 
-            form.video__comments-form#commentForm
-                textarea(cols="30", rows="10", placeholder="Write a nice comment") 
-                button 댓글등록
+            div
+                if !video.owner.avatarUrl
+                    a(href=`/users/${video.owner._id}`).avatar.no-image
+                else
+                    a(href=`/users/${video.owner._id}`)   
+                    img(src=`/${video.owner.avatarUrl}`,crossOrigin).avatar
+            form.video__add-comments__form#commentForm
+                textarea(placeholder="Write a nice comment")
+                div.video__add-comments__btn
+                    span 취소
+                    button 댓글
+
     div.video__comments
         ul 
             each comment in video.comments.reverse()

@@ -7,15 +7,24 @@
     background-color: black;
   }
   .video-mixin__data {
-    padding: 0px 15px;
-    .video-mixin__title {
-      font-size: 18px;
-      display: block;
-      margin-top: 10px;
-    }
-    .video-mixin__meta {
-      margin-top: 6px;
-      font-size: 12px;
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    .video-mixin__desc {
+      display: flex;
+      flex-direction: column;
+      .video-mixin__title {
+        font-size: 18px;
+        font-weight: 600;
+        display: block;
+      }
+      .video-mixin__meta {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        margin: 8px 0px;
+        gap: 6px;
+      }
     }
   }
 }

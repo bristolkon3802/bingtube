@@ -51,6 +51,7 @@ export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = "Bingtube";
   res.locals.loggedInUser = req.session.user || {};
   res.locals.isKoyeb = isKoyeb;
+  res.locals.moment = require("moment", "moment/locale/ko");
   //console.log("session : ", req.session.user);
   //console.log(res.locals);
   next();

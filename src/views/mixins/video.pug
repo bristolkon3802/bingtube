@@ -4,9 +4,18 @@ mixin video(video_info)
             div.video-mixin__thumb(style=`background-image:url(${video_info.videoThumbUrl}); background-size:cover; background-position:center;`)
         else
             div.video-mixin__thumb(style=`background-image:url(${"/"+video_info.videoThumbUrl}); background-size:cover; background-position:center;`)
+        
         div.video-mixin__data
-            span.video-mixin__title=video_info.title
-            div.video-mixin__meta 
-                span #{video_info.owner.name} • 
-                span #{video_info.meta.views} 회
+            div
+                if !video_info.owner.avatarUrl
+                    //a(href=`/users/${video_info.owner._id}`).avatar.no-image
+                else
+                    //a(href=`/users/${video_info.owner._id}`)   
+                    img(src=`${video_info.owner.avatarUrl}`,crossOrigin).avatar
+            div.video-mixin__desc
+                span.video-mixin__title=video_info.title.length > 60? video_info.title.slice(0,60) + '...' :video_info.title
+                div.video-mixin__meta 
+                    span #{video_info.owner.name} 
+                    span 조회수 #{video_info.meta.views}회 • #{moment(video_info.createdAt).fromNow()}
+
         

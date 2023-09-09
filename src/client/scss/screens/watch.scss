@@ -4,39 +4,114 @@
   flex-direction: column;
   .video__title {
     font-size: 26px;
+    font-weight: 500;
     margin-bottom: 5px;
   }
-  .video__createdAt {
-    font-size: 12px;
+  .video-creator {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0px;
+    .video-creator__info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding-right: 20px;
+      .video__owner {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .video__subscribe {
+        font-size: 12px;
+      }
+    }
   }
-  .video__owner {
-    margin-bottom: 5px;
+  .video-creator__btn {
+    padding: 30px 0px;
+  }
+  .video-meta {
+    grid-area: meta;
+    padding: 10px;
+    border-radius: 12px;
     font-size: 14px;
-    a {
-      color: cornflowerblue;
-      text-decoration: underline;
+    line-height: 22px;
+    background-color: #f0f0f0;
+    margin-bottom: 20px;
+    .video-meta__views {
+      display: inline-block;
+      margin-right: 8px;
+      color: black;
+      font-weight: 600;
+    }
+    .video-meta__createdAt {
+      font-weight: 600;
+    }
+    .video-meta__hashtags {
+      display: block;
+      color: blue;
     }
   }
 }
-.video__comments {
+
+.video-btn__subscribe {
+  padding: 10px 20px;
+  border: 0px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+}
+.video-btn__subscribe {
+  background-color: black;
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+}
+
+.video__add-comments {
   display: flex;
-  flex-direction: column;
-  max-width: 320px;
-  margin: 0 auto;
-  margin-top: 20px;
-  .video__comment {
-    padding: 10px;
-    border-radius: 9999px;
-    background-color: black;
-    color: white;
-    margin-bottom: 10px;
-    position: relative;
-    .video__comment-delete {
-      position: absolute;
-      display: block;
-      right: 10px;
-      bottom: 10px;
+  gap: 10px;
+  form {
+    all: unset;
+  }
+  .video__add-comments__form {
+    width: 100%;
+    textarea {
+      all: unset;
+      resize: none;
+      width: 100%;
+      border-bottom: 1px solid black;
+    }
+    .video__add-comments__btn {
+      display: flex;
+      justify-content: end;
+      font-size: 14px;
+      margin-top: 5px;
+      text-align: center;
       cursor: pointer;
+      button {
+        all: unset;
+        width: 40px;
+        color: rgba(0, 0, 0, 0.5);
+        background-color: #f0f0f0;
+        padding: 8px;
+        border-radius: 99999px;
+      }
+      span {
+        padding: 8px;
+        width: 40px;
+        margin-right: 10px;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 99999px;
+        }
+      }
     }
   }
+}
+
+.video__comment {
+  display: grid;
+  grid-template-columns: 0.2fr 2fr 0.2fr;
 }
