@@ -57,7 +57,7 @@ block content
             a(href=`${video.id}/delete`)#deleteVideo.video-btn__subscribe 비디오 삭제 &rarr;
         
         div.video-meta 
-            strong.video-meta__views #{video.meta.views}회
+            strong.video-meta__views 조회수 #{video.meta.views}회
             small.video-meta__createdAt=moment(video.createdAt).fromNow()
             small.video-meta__hashtags=video.hashtags
             p=video.description
